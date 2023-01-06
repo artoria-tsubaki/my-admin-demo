@@ -100,12 +100,14 @@ export function getShowMenuList(menuList: Menu.MenuOptions[]) {
  * @returns array
  */
  export function getAllBreadcrumbList(menuList: Menu.MenuOptions[]) {
-	let handleBreadcrumbList: { [key: string]: any } = {};
+   let handleBreadcrumbList: { [key: string]: any } = {};
+   console.log(menuList)
 	const loop = (menuItem: Menu.MenuOptions) => {
 		if (menuItem?.children?.length) menuItem.children.forEach(item => loop(item));
 		else handleBreadcrumbList[menuItem.path] = getCurrentBreadcrumb(menuItem.path, menuList);
 	};
    menuList.forEach(item => loop(item));
+   console.log(handleBreadcrumbList)
 	return handleBreadcrumbList;
 }
 

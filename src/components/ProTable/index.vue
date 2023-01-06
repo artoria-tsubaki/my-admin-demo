@@ -10,6 +10,7 @@ import { filterEnum, formatValue, handleProp, handleRowAccordingToProp } from '@
 import printJS from 'print-js'
 import SearchForm from '@/components/SearchForm/index.vue'
 import TableColumn from './components/TableColumn.vue'
+import Pagination from './components/Pagination.vue'
 
 // 表格 DOM 元素
 const tableRef = ref<InstanceType<typeof ElTable>>()
@@ -160,35 +161,36 @@ const handlePrint = () => {
         <el-button :icon="Search" circle v-if="searchColumns.length"></el-button>
       </div>
     </div>
+    <!-- 表格主体 -->
+    <el-table ref="tableRef" v-bind="$attrs" :data="tableData" :border="border" :row-key="getRowKeys" @selection-change="selectionChange">
+      <!-- 默认插槽 -->
+      <slot></slot>
+      <template v-for="item in tableColumns" :key="item">
+        <!-- selection || index -->
+        <el-table-column v-bind="item" :align="item.align ?? 'center'" :reserve-selection="item.type == 'selection'" v-if="item.type == 'selection' || item.type == 'index'"> </el-table-column>
+        <!-- expand 支持 tsx 语法 && 作用域插槽 (tsx > slot) -->
+        <el-table-column v-bind="item" :align="item.align ?? 'center'" v-if="item.type == 'expand'" v-slot="scope">
+          <component :is="item.render" :row="scope.row" v-if="item.render"> </component>
+          <slot :name="item.type" :row="scope.row" v-else></slot>
+        </el-table-column>
+        <!-- other 循环递归 -->
+        <TableColumn v-if="!item.type && item.prop && item.isShow" :column="item">
+          <template v-for="slot in Object.keys($slots)" #[slot]="scope">
+            <slot :name="slot" :row="scope.row"></slot>
+          </template>
+        </TableColumn>
+      </template>
+      <!-- 无数据 -->
+      <template #empty>
+        <div class="table-empty">
+          <img src="@/assets/images/notData.png" alt="notData" />
+          <div>暂无数据</div>
+        </div>
+      </template>
+    </el-table>
+    <!-- 分页组件 -->
+    <Pagination v-if="pagination" :pageable="pageable" :handleSizeChange="handleSizeChange" :handleCurrentChange="handleCurrentChange"></Pagination>
   </div>
-
-  <!-- 表格主体 -->
-  <el-table ref="tableRef" v-bind="$attrs" :data="tableData" :border="border" :row-key="getRowKeys" @selection-change="selectionChange">
-    <!-- 默认插槽 -->
-    <slot></slot>
-    <template v-for="item in tableColumns" :key="item">
-      <!-- selection || index -->
-      <el-table-column v-bind="item" :align="item.align ?? 'center'" :reserve-selection="item.type == 'selection'" v-if="item.type == 'selection' || item.type == 'index'"> </el-table-column>
-      <!-- expand 支持 tsx 语法 && 作用域插槽 (tsx > slot) -->
-      <el-table-column v-bind="item" :align="item.align ?? 'center'" v-if="item.type == 'expand'" v-slot="scope">
-        <component :is="item.render" :row="scope.row" v-if="item.render"> </component>
-        <slot :name="item.type" :row="scope.row" v-else></slot>
-      </el-table-column>
-      <!-- other 循环递归 -->
-      <TableColumn v-if="!item.type && item.prop && item.isShow" :column="item">
-        <template v-for="slot in Object.keys($slots)" #[slot]="scope">
-          <slot :name="slot" :row="scope.row"></slot>
-        </template>
-      </TableColumn>
-    </template>
-    <!-- 无数据 -->
-    <template #empty>
-      <div class="table-empty">
-        <img src="@/assets/images/notData.png" alt="notData" />
-        <div>暂无数据</div>
-      </div>
-    </template>
-  </el-table>
 
   <!-- 列设置 -->
 </template>

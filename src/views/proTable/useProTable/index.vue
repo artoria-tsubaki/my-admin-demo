@@ -1,4 +1,4 @@
-<script setup lang="tsx" name="userProTable">
+<script setup lang="tsx" name="useProTable">
 import { User } from '@/api/interface'
 import { ColumnProps } from '@/components/ProTable/interface'
 import { CirclePlus, Delete, EditPen, Download, Upload, View, Refresh } from '@element-plus/icons-vue'
@@ -96,7 +96,7 @@ const columns: ColumnProps[] = [
       return (
         <>
           {BUTTONS.value.status ? (
-            <el-switch model-value={scope.row.status} active-text={scope.row.status ? '启用' : '禁用'} active-value={1} inactive-value={0} onClick={() => changeStatus(scope.row)}></el-switch>
+            <el-switch model-value={scope.row.status} active-text={scope.row.status ? '启用' : '禁用'} active-value={1} inactive-value={0} onClick={() => changeStatus(scope.row)} />
           ) : (
             <el-tag type={scope.row.status ? 'success' : 'danger'}>{scope.row.status ? '启用' : '禁用'}</el-tag>
           )}
@@ -124,6 +124,12 @@ const downloadFile = async () => {
   useDownload(exportUserInfo, '用户列表', proTable.value.searchParam)
 }
 
+// 删除用户信息
+const deleteAccount = async (params: User.ResUserList) => {
+  await useHandleData(deleteUser, { id: [params.id] }, `删除【${params.username}】用户`)
+  proTable.value.getTableList()
+}
+
 // 批量删除用户信息
 const batchDelete = async (id: string[]) => {
   await useHandleData(deleteUser, { id }, '删除所选用户信息')
@@ -134,6 +140,12 @@ const batchDelete = async (id: string[]) => {
 // 切换用户状态
 const changeStatus = async (row: User.ResUserList) => {
   await useHandleData(changeUserStatus, { id: row.id, status: row.status == 1 ? 0 : 1 }, `切换【${row.username}】用户状态`)
+  proTable.value.getTableList()
+}
+
+// 重置用户密码
+const resetPass = async (params: User.ResUserList) => {
+  await useHandleData(resetUserPassWord, { id: params.id }, `重置【${params.username}】用户密码`)
   proTable.value.getTableList()
 }
 
@@ -171,6 +183,29 @@ const openDrawer = (title: string, rowData: Partial<User.ResUserList> = {}) => {
         <el-button type="primary" :icon="Upload" @click="batchAdd">批量添加用户</el-button>
         <el-button type="primary" :icon="Download" @click="downloadFile">导出用户数据</el-button>
         <el-button type="primary" :icon="Delete" @click="batchDelete(scope.selectedListIds)" :disabled="!scope.isSelected">批量删除用户</el-button>
+      </template>
+      <!-- Expand -->
+      <template #expand="scope">
+        {{ scope.row }}
+      </template>
+      <!-- usernameHeader -->
+      <template #usernameHeader="scope">
+        <el-button type="primary" @click="ElMessage.success('我是通过作用域插槽渲染的表头')">
+          {{ scope.row.label }}
+        </el-button>
+      </template>
+      <!-- createTime -->
+      <template #createTime="scope">
+        <el-button type="primary" link @click="ElMessage.success('我是通过作用域插槽渲染的内容')">
+          {{ scope.row.createTime }}
+        </el-button>
+      </template>
+      <!-- 表格操作 -->
+      <template #operation="scope">
+        <el-button type="primary" link :icon="View" @click="openDrawer('查看', scope.row)">查看</el-button>
+        <el-button type="primary" link :icon="EditPen" @click="openDrawer('编辑', scope.row)">编辑</el-button>
+        <el-button type="primary" link :icon="Refresh" @click="resetPass(scope.row)">重置密码</el-button>
+        <el-button type="primary" link :icon="Delete" @click="deleteAccount(scope.row)">删除</el-button>
       </template>
     </ProTable>
     <!-- <UserDrawer ref="drawerRef" /> -->

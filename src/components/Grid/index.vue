@@ -134,6 +134,8 @@ const style = computed(() => {
     gridTemplateColumns: `repeat(${cols.value}, minmax(0, 1fr))`,
   }
 })
+
+defineExpose({ breakPoint })
 </script>
 
 <template>

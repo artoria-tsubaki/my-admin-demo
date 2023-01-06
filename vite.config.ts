@@ -3,6 +3,7 @@ import { dirname, resolve } from "path";
 import { wrapperEnv } from "./src/utils/getEnv";
 import vue from '@vitejs/plugin-vue'
 import VueSetupExtend from 'vite-plugin-vue-setup-extend'
+import vueJsx from '@vitejs/plugin-vue-jsx'
 import vueI18n from '@intlify/vite-plugin-vue-i18n'
 import { fileURLToPath } from "url";
 
@@ -42,6 +43,8 @@ export default defineConfig(({mode}: ConfigEnv): UserConfig => {
     },
     plugins: [
       vue(),
+      // * vite 可以使用 jsx/tsx 语法
+			vueJsx(),
       // * name 可以写在 script 标签上
       VueSetupExtend(),
       vueI18n({include: resolve(dirname(fileURLToPath(import.meta.url)), './path/to/src/locales/**')})

@@ -44,8 +44,10 @@ const breakPoint = computed<BreakPoint>(() => gridRef.value?.breakPoint)
 // 判断是否显示 展开/合并 按钮
 const showCollapse = computed(() => {
   let show = false
+  console.log(props.columns)
   props.columns.reduce((prev, current) => {
     prev += (current.search![breakPoint.value]?.span ?? current.search?.span ?? 1) + (current.search![breakPoint.value]?.offset ?? current.search?.offset ?? 0)
+    console.log(prev, breakPoint.value, props.searchCol)
     if (typeof props.searchCol !== 'number') {
       if (prev >= props.searchCol[breakPoint.value]) show = true
     } else {
@@ -53,6 +55,7 @@ const showCollapse = computed(() => {
     }
     return prev
   }, 0)
+  console.log(showCollapse)
   return show
 })
 </script>
