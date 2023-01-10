@@ -9,8 +9,9 @@ import { useTable } from '@/hooks/useTable'
 import { filterEnum, formatValue, handleProp, handleRowAccordingToProp } from '@/utils/util'
 import printJS from 'print-js'
 import SearchForm from '@/components/SearchForm/index.vue'
-import TableColumn from './components/TableColumn.vue'
-import Pagination from './components/Pagination.vue'
+import TableColumn from '@/components/ProTable/components/TableColumn.vue'
+import Pagination from '@/components/ProTable/components/Pagination.vue'
+import ColSetting from '@/components/ProTable/components/ColSetting.vue'
 
 // 表格 DOM 元素
 const tableRef = ref<InstanceType<typeof ElTable>>()
@@ -158,7 +159,7 @@ const handlePrint = () => {
         <el-button :icon="Refresh" circle @click="getTableList"></el-button>
         <el-button :icon="Printer" circle v-if="columns.length" @click="handlePrint"></el-button>
         <el-button :icon="Operation" circle v-if="columns.length" @click="openColSetting"></el-button>
-        <el-button :icon="Search" circle v-if="searchColumns.length"></el-button>
+        <el-button :icon="Search" circle v-if="searchColumns.length" @click="isShowSearch = !isShowSearch"></el-button>
       </div>
     </div>
     <!-- 表格主体 -->
@@ -191,6 +192,8 @@ const handlePrint = () => {
     <!-- 分页组件 -->
     <Pagination v-if="pagination" :pageable="pageable" :handleSizeChange="handleSizeChange" :handleCurrentChange="handleCurrentChange"></Pagination>
   </div>
+  <!-- 列设置 -->
+  <ColSetting v-if="toolButton" ref="colRef" v-model:colSetting="colSetting" />
 
   <!-- 列设置 -->
 </template>

@@ -81,3 +81,10 @@ export namespace User {
 		children?: ResDepartment[];
 	}
 }
+
+// * 文件上传模块
+export namespace Upload {
+  export interface ResFileUrl {
+    fileUrl: string
+  }
+}

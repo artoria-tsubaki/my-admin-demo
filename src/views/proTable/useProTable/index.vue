@@ -7,7 +7,8 @@ import { useAuthButtons } from '@/hooks/useAuthButtons'
 import { useDownload } from '@/hooks/useDownload'
 import { useHandleData } from '@/hooks/useHandleData'
 import ProTable from '@/components/ProTable/index.vue'
-// import UserDrawer from '@/views/proTable/components/UserDrawer.vue'
+import UserDrawer from '@/views/proTable/components/UserDrawer.vue'
+import ImportExcel from '@/components/ImportExcel/index.vue'
 import { getUserList, deleteUser, editUser, addUser, changeUserStatus, resetUserPassWord, exportUserInfo, BatchAddUser, getUserStatus, getUserGender } from '@/api/modules/user'
 import { reactive, ref } from 'vue'
 
@@ -208,7 +209,8 @@ const openDrawer = (title: string, rowData: Partial<User.ResUserList> = {}) => {
         <el-button type="primary" link :icon="Delete" @click="deleteAccount(scope.row)">删除</el-button>
       </template>
     </ProTable>
-    <!-- <UserDrawer ref="drawerRef" /> -->
+    <UserDrawer ref="drawerRef" />
+    <ImportExcel ref="dialogRef"></ImportExcel>
   </div>
 </template>
 
