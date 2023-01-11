@@ -143,6 +143,8 @@ const handlePrint = () => {
     gridStyle: 'border: 1px solid #ebeef5;height: 40px;font-size: 14px;color: #494b4e;text-align: center',
   })
 }
+// 暴露给父组件的参数和方法(外部需要什么，都可以从这里暴露出去)
+defineExpose({ element: tableRef, tableData, searchParam, pageable, getTableList, clearSelection })
 </script>
 
 <template>
