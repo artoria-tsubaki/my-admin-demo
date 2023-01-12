@@ -28,6 +28,8 @@ import I18n from '@/languages/'
 import errorHandler from '@/utils/errorHandler'
 import pinia from '@/stores/index'
 
+import directives from "@/directives/index"; 
+
 const app = createApp(App)
 
 // 注册element Icons组件
@@ -37,4 +39,4 @@ Object.keys(Icons).forEach((key) => {
 
 app.config.errorHandler = errorHandler
 
-app.use(router).use(I18n).use(ElementPlus).use(pinia).mount('#app')
+app.use(router).use(I18n).use(ElementPlus).use(pinia).use(directives).mount('#app')
