@@ -5,6 +5,7 @@ import vue from '@vitejs/plugin-vue'
 import VueSetupExtend from 'vite-plugin-vue-setup-extend'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import vueI18n from '@intlify/vite-plugin-vue-i18n'
+import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 import { fileURLToPath } from "url";
 
 // https://vitejs.dev/config/
@@ -47,7 +48,16 @@ export default defineConfig(({mode}: ConfigEnv): UserConfig => {
 			vueJsx(),
       // * name 可以写在 script 标签上
       VueSetupExtend(),
-      vueI18n({include: resolve(dirname(fileURLToPath(import.meta.url)), './path/to/src/locales/**')})
+      // 语言切换
+      vueI18n({include: resolve(dirname(fileURLToPath(import.meta.url)), './path/to/src/locales/**')}),
+      /**
+       * 使用 svg 图标
+       * 1. svg图标必须放在目录 src/assets/icons 下
+       */
+      createSvgIconsPlugin({
+        iconDirs: [resolve(process.cwd(), "src/assets/icons")],
+        symbolId: "icon-[dir]-[name]"
+      })
     ],
     build: {
       outDir: "dist",

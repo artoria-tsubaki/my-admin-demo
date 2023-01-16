@@ -27,9 +27,9 @@ import router from '@/routers'
 import I18n from '@/languages/'
 import errorHandler from '@/utils/errorHandler'
 import pinia from '@/stores/index'
-
 import directives from "@/directives/index"; 
-
+// svg icons
+import "virtual:svg-icons-register";
 const app = createApp(App)
 
 // 注册element Icons组件
