@@ -6,7 +6,10 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "build:dev": "vue-tsc --noEmit && vite build --mode development",
+    "build:test": "vue-tsc --noEmit && vite build --mode test",
+    "build:pro": "vue-tsc --noEmit && vite build --mode production"
   },
   "dependencies": {
     "@intlify/vite-plugin-vue-i18n": "^7.0.0",
