@@ -54,7 +54,7 @@ export const useTable = (
       Object.assign(state.totalParam, initParam, isPageable ? pageParam.value : {})
       let { data } = await api(state.totalParam)
       dataCallback && (data = dataCallback(data))
-      state.tableData = isPageable ? data.datalist : data
+      state.tableData = isPageable ? data.datalist ? data.datalist : data.list : data
       // 结构后台返回的分页数据
       const { pageNum, pageSize, total } = data
       isPageable && updatePageable({ pageNum, pageSize, total })

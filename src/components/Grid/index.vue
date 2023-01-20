@@ -13,7 +13,7 @@ const props = withDefaults(defineProps<Props>(), {
   cols: () => ({ xs: 1, sm: 2, md: 2, lg: 3, xl: 4 }),
   collapsed: false,
   collapsedRows: 1,
-  gap: 0,
+  gap: 0
 })
 
 onBeforeMount(() => props.collapsed && findIndex())
@@ -131,7 +131,7 @@ const style = computed(() => {
   return {
     display: 'grid',
     gridGap: gap.value,
-    gridTemplateColumns: `repeat(${cols.value}, minmax(0, 1fr))`,
+    gridTemplateColumns: `repeat(${cols.value}, minmax(0, 1fr))`
   }
 })
 

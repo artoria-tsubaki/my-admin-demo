@@ -7,10 +7,21 @@ import GridItem from '@/components/Grid/components/GridItem.vue'
 import { computed, ref } from 'vue'
 import { Delete, Search, ArrowDown, ArrowUp } from '@element-plus/icons-vue'
 
+/**
+ * type BreakPoint: "xs" | "sm" | "md" | "lg" | "xl";
+ * Record<BreakPoint, number>
+ * const cols = searchCol = {
+ *  xs: 1,
+ *  sm: 2,
+ *  md: 3,
+ *  lg: 4,
+ *  xl: 5,
+ * }
+ */
 interface ProTableProps {
   columns?: ColumnProps[]
   searchParam?: { [key: string]: any }
-  searchCol: number | Record<BreakPoint, number>
+  searchCol: number | Record<BreakPoint, number> // Record 参考 https://www.jianshu.com/p/ff5ee22b2053
   search: (params: any) => void
   reset: (params: any) => void
 }
@@ -18,7 +29,7 @@ interface ProTableProps {
 // 默认值
 const props = withDefaults(defineProps<ProTableProps>(), {
   columns: () => [],
-  searchParam: () => ({}),
+  searchParam: () => ({})
 })
 
 // 获取响应式设置
@@ -30,7 +41,7 @@ const getResponsive = (item: ColumnProps) => {
     sm: item.search?.sm,
     md: item.search?.md,
     lg: item.search?.lg,
-    xl: item.search?.xl,
+    xl: item.search?.xl
   }
 }
 
@@ -45,9 +56,9 @@ const breakPoint = computed<BreakPoint>(() => gridRef.value?.breakPoint)
 const showCollapse = computed(() => {
   let show = false
   console.log(props.columns)
+  console.log(props.searchCol)
   props.columns.reduce((prev, current) => {
     prev += (current.search![breakPoint.value]?.span ?? current.search?.span ?? 1) + (current.search![breakPoint.value]?.offset ?? current.search?.offset ?? 0)
-    console.log(prev, breakPoint.value, props.searchCol)
     if (typeof props.searchCol !== 'number') {
       if (prev >= props.searchCol[breakPoint.value]) show = true
     } else {

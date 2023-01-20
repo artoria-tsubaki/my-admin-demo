@@ -17,16 +17,16 @@ const proTable = ref()
 
 // 如果表格需要初始化请求参数，直接定义传给 ProTable(之后每次请求都会自动带上该参数，此参数更改之后也会一直带上，改变此参数会自动刷新表格数据)
 const initParam = reactive({
-  type: 1,
+  type: 1
 })
 
 // dataCallback 是对于返回的表格数据做处理，如果你后台返回的数据不是 datalist && total && pageNum && pageSize 这些字段，那么你可以在这里进行处理成这些字段
 const dataCallback = (data: any) => {
   return {
-    datalist: data.datalist,
+    datalist: data.datalist ? data.datalist : data.list,
     total: data.total,
     pageNum: data.pageNum,
-    pageSize: data.pageSize,
+    pageSize: data.pageSize
   }
 }
 
@@ -70,14 +70,14 @@ const columns: ColumnProps[] = [
           {scope.row.username}
         </el-button>
       )
-    },
+    }
   },
   {
     prop: 'gender',
     label: '性别',
     enum: getUserGender,
     fieldNames: { label: 'genderLabel', value: 'genderValue' },
-    search: { el: 'select' },
+    search: { el: 'select' }
   },
   // 多级 prop
   { prop: 'user.detail.age', label: '年龄', search: { el: 'input' } },
@@ -91,7 +91,7 @@ const columns: ColumnProps[] = [
     fieldNames: { label: 'userLabel', value: 'userStatus' },
     search: {
       el: 'tree-select',
-      props: { props: { label: 'userLabel' }, nodeKey: 'userStatus' },
+      props: { props: { label: 'userLabel' }, nodeKey: 'userStatus' }
     },
     render: (scope: { row: User.ResUserList }) => {
       return (
@@ -103,7 +103,7 @@ const columns: ColumnProps[] = [
           )}
         </>
       )
-    },
+    }
   },
   {
     prop: 'createTime',
@@ -114,10 +114,10 @@ const columns: ColumnProps[] = [
       el: 'date-picker',
       span: 2,
       defaultValue: ['2022-11-12 11:35:00', '2022-12-12 11:35:00'],
-      props: { type: 'datetimerange' },
-    },
+      props: { type: 'datetimerange' }
+    }
   },
-  { prop: 'operation', label: '操作', fixed: 'right', width: 330 },
+  { prop: 'operation', label: '操作', fixed: 'right', width: 330 }
 ]
 
 // 导出用户列表
@@ -157,7 +157,7 @@ const batchAdd = () => {
     title: '用户',
     tempApi: exportUserInfo,
     importApi: BatchAddUser,
-    getTableList: proTable.value.getTableList,
+    getTableList: proTable.value.getTableList
   }
   dialogRef.value.acceptParams(params)
 }
@@ -170,7 +170,7 @@ const openDrawer = (title: string, rowData: Partial<User.ResUserList> = {}) => {
     rowData: { ...rowData },
     isView: title === '查看',
     api: title === '新增' ? addUser : title === '编辑' ? editUser : '',
-    getTableList: proTable.value.getTableList,
+    getTableList: proTable.value.getTableList
   }
   drawerRef.value.acceptParams(params)
 }
