@@ -62,7 +62,7 @@ const showCollapse = computed(() => {
     if (typeof props.searchCol !== 'number') {
       if (prev >= props.searchCol[breakPoint.value]) show = true
     } else {
-      if (prev > props.searchCol) show = true
+      if (prev >= props.searchCol) show = true
     }
     return prev
   }, 0)

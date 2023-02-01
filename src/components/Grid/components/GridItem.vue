@@ -21,7 +21,7 @@ const props = withDefaults(defineProps<Props>(), {
   sm: undefined,
   md: undefined,
   lg: undefined,
-  xl: undefined,
+  xl: undefined
 })
 
 const attrs = useAttrs() as any
@@ -49,12 +49,12 @@ const style = computed(() => {
     return {
       gridColumnStart: cols.value - span - offset + 1,
       gridColumnEnd: `span ${span + offset}`,
-      marginLeft: offset !== 0 ? `calc(((100% + ${gap}px) / ${span + offset}) * ${offset})` : 'unset',
+      marginLeft: offset !== 0 ? `calc(((100% + ${gap}px) / ${span + offset}) * ${offset})` : 'unset'
     }
   } else {
     return {
       gridColumn: `span ${span + offset > cols.value ? cols.value : span + offset}/span ${span + offset > cols.value ? cols.value : span + offset}`,
-      marginLeft: offset !== 0 ? `calc(((100% + ${gap}px) / ${span + offset}) * ${offset})` : 'unset',
+      marginLeft: offset !== 0 ? `calc(((100% + ${gap}px) / ${span + offset}) * ${offset})` : 'unset'
     }
   }
 })
@@ -62,7 +62,7 @@ const style = computed(() => {
 
 <template>
   <div :style="style" v-show="isShow">
-    <slot></slot>
+    <slot> </slot>
   </div>
 </template>
 

@@ -78,8 +78,10 @@ const slots = useSlots().default!() as any
 const findIndex = () => {
   let fields: VNodeArrayChildren = []
   let suffix: any = null
+  console.log(slots)
+
   slots.forEach((slot: any) => {
-    if (typeof slot.type === 'object' && slot.type.name === 'GridItem' && slot.props?.suffix !== undefined) suffix = slot
+    if (typeof slot.type === 'object' && (slot.type.name === 'GridItem' || slot.type.__name === 'GridItem') && slot.props?.suffix !== undefined) suffix = slot
     if (typeof slot.type === 'symbol' && Array.isArray(slot.children)) slot.children.forEach((child: any) => fields.push(child))
   })
 
