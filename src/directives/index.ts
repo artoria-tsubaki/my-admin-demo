@@ -1,4 +1,5 @@
 import { App } from 'vue'
+import auth from './modules/auth'
 import copy from './modules/copy'
 import draggable from './modules/draggable'
 import waterMarker from './modules/waterMarker'
@@ -8,6 +9,7 @@ import longpress from './modules/longpress'
 
 const directivesList: any = {
   // Custom directives
+  auth,
   copy,
   waterMarker,
   draggable,
