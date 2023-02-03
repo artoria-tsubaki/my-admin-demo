@@ -46,6 +46,7 @@ const dynamicAddRouter = (authStore: any) => {
     if (item.meta.isFull) {
       router.addRoute(item)
     } else {
+      console.log(item)
       router.addRoute('layout', item)
     }
   })
