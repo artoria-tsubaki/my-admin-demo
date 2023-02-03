@@ -2,11 +2,13 @@ import { LOGIN_URL } from '@/config/config'
 import router from '@/routers'
 import { notFoundRouter } from '@/routers/modules/staticRouter'
 import { AuthStore } from '@/stores/modules/auth'
-import { getFlatArr } from '@/utils/util'
+import { getFlatArr, isType } from '@/utils/util'
 import { ElNotification } from 'element-plus'
 
 // 引入 views 文件夹下所有 vue 文件
 const modules = import.meta.glob('@/views/**/*.vue')
+console.log(modules);
+
 
 export const initDynamicRouter = async () => {
   try {
@@ -40,7 +42,7 @@ const dynamicAddRouter = (authStore: any) => {
   let dynamicRouter = getFlatArr(JSON.parse(JSON.stringify(authStore.authMenuListGet)))
   dynamicRouter.forEach((item: any) => {
     if (item.children) delete item.children
-    if (item.component) item.component = modules['/src/views' + item.component + '.vue']
+    if (item.component && isType(item.component) == "string") item.component = modules['/src/views' + item.component + '.vue']
     if (item.meta.isFull) {
       router.addRoute(item)
     } else {
