@@ -17,7 +17,7 @@ type FormInstance = InstanceType<typeof ElForm>
 const loginFormRef = ref<FormInstance>()
 const loginRules = reactive({
   username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
-  password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
+  password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
 })
 
 const loading = ref(false)
@@ -43,7 +43,7 @@ const login = (formEl: FormInstance | undefined) => {
         title: getTimeState(),
         message: '欢迎登陆 Admin System',
         type: 'success',
-        duration: 3000,
+        duration: 3000
       })
     } finally {
       loading.value = false

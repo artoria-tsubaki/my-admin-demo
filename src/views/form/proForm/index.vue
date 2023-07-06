@@ -1,5 +1,5 @@
 <script setup lang="ts" name="proTable">
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 
 let model = ref<any>({})
 
@@ -52,10 +52,52 @@ const options = ref({
         typeName: 'input',
         placeholder: '请输入邮箱',
         clearable: true,
-        style: 'width:500px'
+        style: 'width:500px',
+        defaultValue: '1248353039@qq.com'
+      }
+    },
+    {
+      formItem: {
+        label: '性别',
+        prop: 'gender'
+      },
+      attrs: {
+        typeName: 'select',
+        placeholder: '请输入性别',
+        style: 'width:500px',
+        defaultValue: '0'
+      },
+      options: [
+        {
+          label: '男',
+          value: '0'
+        },
+        {
+          label: '女',
+          value: '1'
+        }
+      ]
+    },
+    {
+      formItem: {
+        label: '开始时间',
+        prop: 'startTime'
+      },
+      attrs: {
+        typeName: 'date-picker',
+        type: 'datetimerange',
+        clearable: true,
+        style: 'width:1000px',
+        defaultValue: ['2022-11-12 11:35:00', '2022-12-12 11:35:00']
       }
     }
   ]
+})
+
+onMounted(() => {
+  options.value.columns.forEach((column) => {
+    column.attrs.defaultValue && (model.value[column.formItem.prop] = column.attrs.defaultValue)
+  })
 })
 </script>
 
@@ -65,7 +107,11 @@ const options = ref({
     <component :is="'el-form'" v-bind="options.form" ref="proFormRef" :model="model">
       <template v-for="item in options.columns" :key="item.prop">
         <component :is="'el-form-item'" v-bind="item.formItem">
-          <component :is="`el-${item.attrs.typeName}`" v-bind="item.attrs" v-model="model[item.formItem.prop]"></component>
+          <component :is="`el-${item.attrs.typeName}`" v-bind="item.attrs" v-model="model[item.formItem.prop]">
+            <template v-if="item.attrs.typeName === 'select'">
+              <component :is="`el-option`" v-for="(col, index) in item.options" :key="index" :label="col.label" :value="col.value"></component>
+            </template>
+          </component>
         </component>
       </template>
       <el-form-item>

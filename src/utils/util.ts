@@ -29,6 +29,11 @@ export function getFlatArr(menuList: Menu.MenuOptions[]) {
   }, [])
 }
 
+export function randomNum(min: number, max: number): number {
+  let num = Math.floor(Math.random() * (min - max) + max)
+  return num
+}
+
 /**
  * @description 获取当前时间对应的提示语
  * @return string

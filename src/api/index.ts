@@ -51,7 +51,7 @@ class RequestHttp {
         // 请求结束后，关闭loading
         tryHideFullScreenLoading()
         // 登录失败 code == 599
-        if (data.codee == ResultEnum.OVERDUE) {
+        if (data.code == ResultEnum.OVERDUE) {
           ElMessage.error(data.msg)
           globalStore.setToken("")
           router.replace(LOGIN_URL)

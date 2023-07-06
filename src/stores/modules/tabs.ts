@@ -7,7 +7,7 @@ import router from '@/routers/index'
 // TabsStore
 export const TabsStore = defineStore({
   id: 'TabsState',
-  state: (): TabState => ({
+  state: (): TabsState => ({
     tabsMenuList: [],
   }),
   getters: {},

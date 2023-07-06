@@ -1,7 +1,7 @@
 <script setup lang="ts" name="ProTable">
 import { Refresh, Printer, Operation, Search } from '@element-plus/icons-vue'
 import { ElTable, TableProps } from 'element-plus'
-import { computed, provide, ref, watch } from 'vue'
+import { computed, provide, ref, useSlots, watch } from 'vue'
 import { BreakPoint } from '@/components/Grid/interface'
 import { ColumnProps } from './interface'
 import { useSelection } from '@/hooks/useSelection'
@@ -12,6 +12,10 @@ import SearchForm from '@/components/SearchForm/index.vue'
 import TableColumn from '@/components/ProTable/components/TableColumn.vue'
 import Pagination from '@/components/ProTable/components/Pagination.vue'
 import ColSetting from '@/components/ProTable/components/ColSetting.vue'
+
+const slot = useSlots()
+
+console.log(slot)
 
 // 表格 DOM 元素
 const tableRef = ref<InstanceType<typeof ElTable>>()
@@ -40,7 +44,7 @@ const props = withDefaults(defineProps<ProTableProps>(), {
   border: true,
   toolButton: true,
   selectId: 'id',
-  searchCol: () => ({ xs: 1, sm: 2, md: 2, lg: 3, xl: 4 }),
+  searchCol: () => ({ xs: 1, sm: 2, md: 2, lg: 3, xl: 4 })
 })
 
 // 表格多选 Hooks
@@ -97,8 +101,19 @@ const flatColumnsFunc = (columns: ColumnProps[], flatArr: ColumnProps[] = []) =>
 const flatColumns = ref<ColumnProps[]>()
 flatColumns.value = flatColumnsFunc(tableColumns.value as any)
 
-// 过滤需要搜索的匹配项 && 处理搜索排序
-const searchColumns = flatColumns.value.filter((item) => item.search?.el).sort((a, b) => (b.search?.order ?? 0) - (a.search?.order ?? 0))
+// 过滤需要搜索的配置项
+const searchColumns = flatColumns.value.filter((item) => item.search?.el)
+
+// 设置搜索表单排序默认值 && 设置搜索表单项的默认值
+searchColumns.forEach((column, index) => {
+  column.search!.order = column.search!.order ?? index + 2
+  if (column.search?.defaultValue !== undefined && column.search?.defaultValue !== null) {
+    searchInitParam.value[column.search.key ?? handleProp(column.prop!)] = column.search?.defaultValue
+  }
+})
+
+// 排序搜索表单项
+searchColumns.sort((a, b) => a.search!.order! - b.search!.order!)
 
 // 列设置 过滤掉不需要设置显隐的列
 const colRef = ref()
@@ -135,12 +150,12 @@ const handlePrint = () => {
       .map((item: ColumnProps) => {
         return {
           field: handleProp(item.prop!),
-          displayName: item.label,
+          displayName: item.label
         }
       }),
     type: 'json',
     gridHeaderStyle: 'border: 1px solid #ebeef5;height: 45px;font-size: 14px;color: #232425;text-align: center;background-color: #fafafa;',
-    gridStyle: 'border: 1px solid #ebeef5;height: 40px;font-size: 14px;color: #494b4e;text-align: center',
+    gridStyle: 'border: 1px solid #ebeef5;height: 40px;font-size: 14px;color: #494b4e;text-align: center'
   })
 }
 // 暴露给父组件的参数和方法(外部需要什么，都可以从这里暴露出去)

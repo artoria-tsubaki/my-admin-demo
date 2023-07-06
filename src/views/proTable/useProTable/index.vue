@@ -117,6 +117,18 @@ const columns: ColumnProps[] = [
       props: { type: 'datetimerange' }
     }
   },
+  // {
+  //   prop: 'endTime',
+  //   label: '结束时间',
+  //   headerRender,
+  //   width: 200,
+  //   search: {
+  //     el: 'date-picker',
+  //     span: 2,
+  //     defaultValue: ['2022-11-12 11:35:00', '2022-12-12 11:35:00'],
+  //     props: { type: 'datetimerange' }
+  //   }
+  // },
   { prop: 'operation', label: '操作', fixed: 'right', width: 330 }
 ]
 
