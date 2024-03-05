@@ -1,5 +1,9 @@
 <script setup lang="ts" name="login">
 import LoginForm from './components/LoginForm.vue'
+import { dayOfYear } from 'pycd-js'
+
+console.log(dayOfYear());
+
 </script>
 
 <template>
